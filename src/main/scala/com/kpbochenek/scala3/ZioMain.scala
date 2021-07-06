@@ -13,7 +13,7 @@ object ZioMain extends App {
     _ <- (ZIO.succeed(println("ITER!"))).repeat(Schedule.fixed(1.second)).fork
 //    clock <- ZIO.environment[Clock]
     _ <- sleep(10.second)
-    valueX <- narrowThrow
+    valueX <- narrowThrow *> narrowThrow
     value2 <- narrowErr
     _ = println(value2)
   } yield 3).absorb.catchSome { case e => ZIO.succeed(5) }.map(v => println(s"RESULT => ${v}")).exitCode

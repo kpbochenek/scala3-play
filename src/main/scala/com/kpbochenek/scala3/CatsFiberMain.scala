@@ -17,7 +17,7 @@ object CatsFiberMain extends IOApp {
   }
 
   def sameThread(): IO[String] = for {
-    _ <- IO { println(s"[${Thread.currentThread().getName}]Start CATS app") }
+    _ <- IO { println(s"[${Thread.currentThread().getName}] Start CATS app") }
     i <- meaningOfLife.debug.start
     s <- favLang.debug.start
     iVal <- i.join
@@ -28,8 +28,5 @@ object CatsFiberMain extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] =
     sameThread().debug.as(ExitCode.Success)
-
-  // def main(args: Array[String]): Unit = {
-  //   println("CatsFiber")
-  // }
+  println("CatsFiber")
 }

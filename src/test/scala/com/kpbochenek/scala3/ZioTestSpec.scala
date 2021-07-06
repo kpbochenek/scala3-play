@@ -4,7 +4,7 @@ import zio._
 import zio.console._
 import zio.clock._
 import zio.test._
-import zio.test.Assertion._
+import zio.test.{Assertion => A}
 import zio.test.environment._
 import zio.duration._
 
@@ -49,27 +49,27 @@ object ZioTestSpec extends DefaultRunnableSpec {
       for {
         breadService <- ZIO.service[BreadService]
         value <- ZIO.succeed(1)
-      } yield assert(breadService.makeBread("A"))(equalTo(Bread("A", 20)))
+      } yield assert(breadService.makeBread("A"))(A.equalTo(Bread("A", 20)))
     }.provideLayer(breadLayer),
     testM("example2") {
       for {
         refresh <- ZIO.service[RefreshService]
         value <- ZIO.succeed(3)
         _ <- refresh.perform()
-        _ <- TestClock.adjust(5.seconds)
-      } yield assert(value)(equalTo(3))
+      //  _ <- TestClock.adjust(5.seconds)
+      } yield assert(value)(A.equalTo(3))
 
     },
     testM("example3") {
       for {
         breadService <- ZIO.service[BreadService]
-      } yield assert(1)(equalTo(1))
+      } yield assert(1)(A.equalTo(1))
     }.provideLayer(breadLayer),
     testM("example3") {
       for {
         value <- ZIO.succeed(5)
         value2 = {Thread.sleep(4000); 13 }
-      } yield assert(value + value2)(equalTo(18))
+      } yield assert(value + value2)(A.equalTo(18))
     }
   ).provideLayer(refreshLayer)
 }
